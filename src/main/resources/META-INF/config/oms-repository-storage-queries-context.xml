@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="mysqlNamedQueries" class="com.hacorp.shop.common.MysqlNamedQueries"
+		lazy-init="true">
+		<constructor-arg>
+			<map>
+				<!-- Document MetaData Model -->
+				<entry key="getAllMetadata">
+					<value>
+						<![CDATA[
+							Select tm.ID, tm.LOOKUPCODE, tm.LOOKUPCODEID, tm.LANGUAGE, tm.VALUE, tm.ORDERBY from OMS_METADATA tm 
+							group by tm.LOOKUPCODE, tm.ORDERBY, tm.ID, tm.LOOKUPCODEID, tm.LANGUAGE, tm.VALUE order by tm.LOOKUPCODE,tm.ORDERBY, tm.VALUE
+						]]>
+					</value>
+				</entry>
+				
+				<entry key="getMetadataByLookupCode">
+					<value>
+						<![CDATA[
+							Select tm.ID, tm.LOOKUPCODE, tm.LOOKUPCODEID, tm.LANGUAGE, tm.VALUE, tm.ORDERBY from OMS_METADATA tm  where tm.LOOKUPCODE = :LOOKUPCODE
+							group by tm.LOOKUPCODE, tm.ORDERBY, tm.ID, tm.LOOKUPCODEID, tm.LANGUAGE, tm.VALUE order by tm.LOOKUPCODE,tm.ORDERBY, tm.VALUE
+						]]>
+					</value>
+				</entry>
+				
+				<entry key="getCommonValByBizCode">
+					<value>
+						<![CDATA[Select * from OMS_COMMON_VAL]]>
+					</value>
+				</entry>
+
+
+				<!-- Document OMS File MasModel -->
+				<entry key="getListUploadByDate">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_STMT_FILE_MAS mas 
+							WHERE mas.UPLOAD_DT = :uploadDt
+							and mas.FILE_STATUS <> :status
+							and mas.FILE_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				<!-- Document OMS File MasModel -->
+				<entry key="getListUploadByDateAndStatus">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_STMT_FILE_MAS mas 
+							WHERE mas.UPLOAD_DT = :uploadDt
+							and mas.FILE_STATUS = :status
+							and mas.FILE_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				<!-- Document OMS File MasModel -->
+				<entry key="getListUploadByDateAndBankCode">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_STMT_FILE_MAS mas 
+							WHERE mas.UPLOAD_DT =:uploadDt
+							and mas.BANK_CODE =:bankCode
+							and mas.FILE_STATUS = '10'
+							and mas.FILE_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				<entry key="getDeleteListUploadByBankcode">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_STMT_FILE_MAS mas 
+							WHERE mas.UPLOAD_DT =:uploadDt
+							and mas.BANK_CODE =:bankCode
+							and mas.FILE_STATUS <> '20'
+							and mas.FILE_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				<!-- Document OMS File MasModel -->
+				<entry key="getListUploadByDateName">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_STMT_FILE_MAS mas 
+							WHERE mas.UPLOAD_DT = :uploadDt
+							and mas.FILE_NAME =:fileName
+							and mas.FILE_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				
+				<!-- Document OMS Bank Common Model -->
+				<entry key="getBankCommonByBankName">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_BANK_COMMON mas 
+							WHERE mas.BANK_NAME = :BANK_NAME
+						]]>
+					</value>
+				</entry>
+				
+				<!-- Document OMS Bank Common Model -->
+				<entry key="getBankCommonByBankAccNum">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_BANK_COMMON mas 
+							WHERE mas.BANK_ACC_NUM = :BANK_ACC_NUM
+							and rownum = 1
+						]]>
+					</value>
+				</entry>
+				<!-- Document OMS Bank Common Model -->
+				<entry key="getBankCommonByBizValue">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_BANK_COMMON mas 
+							WHERE mas.BIZ_VALUE = :BIZ_VALUE
+						]]>
+					</value>
+				</entry>
+				<!-- Document OMS Bank Common Model -->
+				<entry key="getBankCommonInfByBizValue">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_BANK_COMMON_INF mas 
+							WHERE mas.BIZ_VALUE = :BIZ_VALUE
+						]]>
+					</value>
+				</entry>
+				
+				<!-- Document LMS Model -->
+				<entry key="getLmsDataByValueDate">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_LMS_INF mas 
+							WHERE mas.TRX_DT = :trxDt
+							and mas.TRANSACTION_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				<!-- Document LMS Model -->
+				<entry key="getLmsDataByBankCode">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_LMS_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.STATUS in (:status,0)
+							and mas.TRANSACTION_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				<!-- Document LMS Model -->
+				<entry key="getLmsDataByBankCodeAndDate">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_LMS_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.TRX_DT = :trxDt
+							and mas.TRANSACTION_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				
+				<!-- Document LMS Model -->
+				<entry key="getLmsMatchStmtRef">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_LMS_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.REF_NO like :refNo || '%'
+							and mas.DR_AMT = :drAmt
+							and mas.TRANSACTION_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				<!-- Document LMS Model -->
+				<entry key="getListLmsTrxMatchWithRevertRef">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_LMS_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.REF_NO like :refNo || '%'
+							and mas.CR_AMT = :crAmt
+							and mas.TRANSACTION_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				<!-- Document LMS Model -->
+				<entry key="getLmsMatchByLoanAndCrAmt">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_LMS_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.LOAN_NO like :loanNo || '%'
+							and mas.CR_AMT = :crAmt
+							and mas.TRANSACTION_TYPE = :transactionType
+						]]>
+					</value>
+				</entry>
+				<!-- Document OMS Bank Statement Model -->
+				<entry key="getOmsDataByDate">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_STMT_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.STATUS in :status
+							and mas.TRX_DT between :_startDt and :_endDt
+						]]>
+					</value>
+				</entry>
+				<!-- Document OMS Model -->
+				<entry key="getOMSDataByBankCode">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_STMT_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.STATUS in (:status,0)
+						]]>
+					</value>
+				</entry>
+				<!-- Document OMS Bank Statement Model -->
+				<entry key="getOmsDataByBankCodeAndDate">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_STMT_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.TRX_DT =:trxDt
+						]]>
+					</value>
+				</entry>
+				<!-- Document OMS Bank Statement Model -->
+				<entry key="getStatementByRef">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_STMT_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.REF_NO in :refNo
+							and mas.CR_AMT = :crAmt
+						]]>
+					</value>
+				</entry>
+				<!-- Document OMS Bank Statement Model -->
+				<entry key="getStatementByRevertRef">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_STMT_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.REF_NO in :refNo
+							and mas.CR_AMT = :crAmt
+						]]>
+					</value>
+				</entry>
+				<!-- Document Suspense Model -->
+				<entry key="getSuspByRef">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_SUSPENSE_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.REF_NO in :refNo
+							and mas.CR_AMT = :crAmt
+						]]>
+					</value>
+				</entry>
+				<!-- Document Suspense Model -->
+				<entry key="getSuspByRevertRef">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_SUSPENSE_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.REF_NO in :refNo
+							and mas.DR_AMT = :drAmt
+						]]>
+					</value>
+				</entry>
+				<!-- Document Suspense Model -->
+				<entry key="getSuspDataByBankCodeAndDate">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_SUSPENSE_INF mas 
+							WHERE mas.BANK_CODE = :bankCode
+							and mas.TRX_DT = :trxDt
+						]]>
+					</value>
+				</entry>
+				<!-- Document Suspense Model -->
+				<entry key="getSuspenseList">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_SUSPENSE_INF mas 
+							WHERE mas.BANK_CODE = nvl(:bankCode,mas.BANK_CODE)
+							and mas.TRX_DT between :_startDt and :_endDt
+							and mas.LOAN_NO = nvl(:loanNo,mas.LOAN_NO)
+							and mas.STATUS = decode(:status,0,mas.STATUS,:status)
+						]]>
+					</value>
+				</entry>
+				
+				<!-- Document Disbursal Model -->
+				<entry key="getSpecDisbByLoanAndAmt">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_DISBURS_INF mas 
+							WHERE mas.LOAN_NO = :loanNo
+							and mas.BANK_CODE = :bankCode
+							and mas.DR_AMT = :drAmt
+						]]>
+					</value>
+				</entry>
+				<!-- Document Disbursal Model -->
+				<entry key="getDisbursByBankCodeAndStatus">
+					<value>
+						<![CDATA[
+							Select mas.* from OMS_RECON_DISBURS_INF mas 
+							WHERE mas.LOAN_NO = :loanNo
+							and mas.BANK_CODE = :bankCode
+							and mas.STATUS = :status
+						]]>
+					</value>
+				</entry>
+				<!-- Make template table -->
+				<entry key="maketabletemptatus">
+					<value>
+						<![CDATA[
+							select 1 STATUS from dual union 
+							select 2 STATUS from dual union  
+							select 4 STATUS from dual
+						]]>
+					</value>
+				</entry>
+				<!-- Regex  -->
+				<entry key="REGEX_FINANCE">
+					<value>
+						<![CDATA[.*Fund transfer|Thu hộ|Thu ho|Tranfer to|Thanh toan cai GD qua vi Zalopay.*]]>
+					</value>
+				</entry>
+				<entry key="REGEX_REVERSAL">
+					<value>
+						<![CDATA[.*Hoàn trả|Chuyển trả|Thu phí chuyển tiền.*]]>
+					</value>
+				</entry>
+				<entry key="REGEX_GET_REF_AGRIBANK">
+					<value>
+						<![CDATA[[\d]+[|][\d]+]]>
+					</value>
+				</entry>
+				<entry key="REGEX_GET_REF_OCB061">
+					<value>
+						<![CDATA[(?<=Ref:).[0-9]+]]>
+					</value>
+				</entry>
+				<entry key="REGEX_EXCPT_OCB061">
+					<value>
+						<![CDATA[.*thu ho.*]]>
+					</value>
+				</entry>
+				<entry key="REGEX_GET_LOAN_NO">
+					<value>
+						<![CDATA[[^\d](10[\d]{7}|10[\d]{6}|11[\d]{6}|11[\d]{7})[^\d]]]>
+					</value>
+				</entry>
+				<entry key="REGEX_CHECK_LOAN_SUSPENSE">
+					<value>
+						<![CDATA[[^\d](7[\d]{7})[^\d]]]>
+					</value>
+				</entry>
+				<entry key="REGEX_GET_CRSHIELD_TCB">
+					<value>
+						<![CDATA[.*Hoàn trả|Chuyển trả|Thu phí chuyển tiền.*]]>
+					</value>
+				</entry>
+				<entry key="REGEX_DISB_FINANCE_VCB">
+					<value>
+						<![CDATA[.*Fund tranfer|Thu phi.*]]>
+					</value>
+				</entry>
+				<entry key="REGEX_DISB_CRSHIELD_VCB">
+					<value>
+						<![CDATA[.*Chuyen tien bao hiem.*]]>
+					</value>
+				</entry>
+				<entry key="REGEX_DISB_REVERT_VCB">
+					<value>
+						<![CDATA[.*Hoan tra|Chuyen tra.*]]>
+					</value>
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+</beans>
