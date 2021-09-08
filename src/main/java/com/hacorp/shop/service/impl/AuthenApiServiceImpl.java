@@ -18,6 +18,7 @@ import com.hacorp.shop.core.exception.UnauthorizedException;
 import com.hacorp.shop.core.model.MetaDataInfor;
 import com.hacorp.shop.core.model.UserInfo;
 import com.hacorp.shop.core.utils.CommonUtil;
+import com.hacorp.shop.core.utils.DtoConvert;
 import com.hacorp.shop.repository.entity.User;
 import com.hacorp.shop.service.AuthenApiService;
 
@@ -27,7 +28,7 @@ public class AuthenApiServiceImpl extends AbstractBasicCommonClass implements Au
 	
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	@Override
-	public UserInfo generateUserToken(Map<String, Object> inputParams, AuthenticationManager authenticationManager) throws BaseException {
+	public UserInfo generateUserToken(Map<String, Object> inputParams, AuthenticationManager authenticationManager) throws Exception {
 		Map<String, Object> userInput = new HashedMap<>();
 		UserInfo userInfo = (UserInfo) CommonUtil.toPojo(inputParams.get(APIConstant.DOCUMENT_KEY).toString(), UserInfo.class);
 		userInput.put(APIConstant.USERNAME_KEY, userInfo.getUserName());
@@ -39,9 +40,8 @@ public class AuthenApiServiceImpl extends AbstractBasicCommonClass implements Au
 		}
 
 		final String token = jwtTokenUtils.createJWT(userInfo.getUserName());
-		userInfo.setToken(token);
-		userInfo.setRoles(user.getUserRoles());
-		return userInfo;
+		
+		return DtoConvert.setUserInfor(user, token);
 	}
 	
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)

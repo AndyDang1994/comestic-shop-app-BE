@@ -5,17 +5,24 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.rocksdb.Env;
 
+import com.hacorp.shop.common.AbstractBasicCommonClass;
 import com.hacorp.shop.core.constant.APIConstant;
+import com.hacorp.shop.core.exception.BaseException;
+import com.hacorp.shop.core.exception.ServiceParsingException;
+import com.hacorp.shop.core.exception.ServiceRuntimeException;
+import com.hacorp.shop.core.model.AuthenFeatureInfor;
 import com.hacorp.shop.core.model.ProductInfor;
 import com.hacorp.shop.core.model.UserInf;
+import com.hacorp.shop.core.model.UserInfo;
 import com.hacorp.shop.repository.entity.Product;
 import com.hacorp.shop.repository.entity.Role;
 import com.hacorp.shop.repository.entity.SubCategory;
 import com.hacorp.shop.repository.entity.User;
 import com.hacorp.shop.repository.entity.UserRole;
 
-public class DtoConvert {
+public class DtoConvert extends AbstractBasicCommonClass{
 
 	public static void setUserUtility(User user, Date createDt, String createdBy, Date lchgDt, String lchgBy) {
 		
@@ -163,5 +170,27 @@ public class DtoConvert {
 		prod.setSubCategory(subCate);
 		setProductUtility(prod,new Date(),userName,new Date(),userName);
 	}
+	
+	public static UserInfo setUserInfor(User user, String token) throws Exception{
+		UserInfo userInf = new UserInfo();
+		
+		List<AuthenFeatureInfor> featureInfo = new ArrayList<>();
+		List<String> roles = new ArrayList<>();
+		List<UserRole> userRole = user.getUserRoles();
+		
+		for (UserRole usRole : userRole) {
+			featureInfo.add((AuthenFeatureInfor) CommonUtil.toPojo(usRole.getRole().getRoleConfig(), AuthenFeatureInfor.class ));
+			roles.add(usRole.getRole().getRoleCode());
+		}
+		
+		userInf.setToken(token);
+		userInf.setUserName(user.getUserName());
+		userInf.setFullname(user.getMasterUserName());
+		userInf.setAuthenFeature(featureInfo);
+		userInf.setRoles(roles);
+		return userInf;
+		
+	}
+	
 	
 }

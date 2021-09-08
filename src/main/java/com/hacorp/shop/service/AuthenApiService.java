@@ -10,7 +10,7 @@ import com.hacorp.shop.core.model.UserInfo;
 
 public interface AuthenApiService {
 
-	public UserInfo generateUserToken(Map<String, Object> inputParams, AuthenticationManager authenticationManager) throws BaseException;
+	public UserInfo generateUserToken(Map<String, Object> inputParams, AuthenticationManager authenticationManager) throws Exception;
 
 	public MetaDataInfor getMetaDataInfor() throws BaseException;
 	

@@ -3,6 +3,7 @@
  */
 package com.hacorp.shop.core.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,14 +13,19 @@ import com.hacorp.shop.repository.entity.UserRole;
  * @author shds01
  *
  */
-public class UserInfo {
+public class UserInfo implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String userName;
 	private String password;
 	private String fullname;
 	private String status;
 	private String token;
 	private Object roles;
+	private Object authenFeature;
 
 	/**
 	 * 
@@ -27,6 +33,7 @@ public class UserInfo {
 	public UserInfo() {
 		super();
 		this.roles = new ArrayList<>();
+		this.authenFeature = new ArrayList<>();
 	}
 
 	/**
@@ -168,5 +175,14 @@ public class UserInfo {
 	public void setRoles(Object roles) {
 		this.roles = roles;
 	}
+
+	public Object getAuthenFeature() {
+		return authenFeature;
+	}
+
+	public void setAuthenFeature(Object authenFeature) {
+		this.authenFeature = authenFeature;
+	}
+	
 	
 }

@@ -27,7 +27,7 @@ public class AuthenController extends BaseController{
 	
 	@RequestMapping(value = "/api/authentication", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<Object> generateTokenUser(@RequestBody String document, Locale locale) throws BaseException {
+	public ResponseEntity<Object> generateTokenUser(@RequestBody String document, Locale locale) throws Exception {
 		Map<String, Object> inputParams = new HashMap<>();
 		inputParams.put(APIConstant.DOCUMENT_KEY, document);
 		
