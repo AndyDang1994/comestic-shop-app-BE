@@ -3,11 +3,13 @@
  */
 package com.hacorp.shop.core.exception;
 
+import javax.servlet.ServletException;
+
 /**
  * @author shds01
  *
  */
-public class UnauthorizedException extends BaseException{
+public class UnauthorizedException extends ServletException{
 
 	/**
 	 * 
@@ -21,17 +23,7 @@ public class UnauthorizedException extends BaseException{
 		super();
 	}
 
-	/**
-	 * @param message
-	 * @param cause
-	 * @param enableSuppression
-	 * @param writableStackTrace
-	 */
-	public UnauthorizedException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
-
+	
 	/**
 	 * @param message
 	 * @param cause

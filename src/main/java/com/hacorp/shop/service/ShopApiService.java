@@ -11,8 +11,6 @@ import com.hacorp.shop.repository.entity.Product;
 
 public interface ShopApiService {
 	
-	public boolean registerUser(Map<String, Object> inputParams) throws BaseException;
-	
 	public List<Product> getProduct(Map<String, Object> inputParams) throws BaseException;
 	
 	public Resource getProductImage(Map<String, Object> inputParams) throws BaseException;

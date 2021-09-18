@@ -1,6 +1,7 @@
 package com.hacorp.shop.security;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -15,6 +16,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.hacorp.shop.common.ValidationUserManagementService;
+import com.hacorp.shop.core.constant.APIConstant;
+import com.hacorp.shop.core.exception.BaseException;
+import com.hacorp.shop.core.exception.UnauthorizedException;
 import com.hacorp.shop.service.impl.UserDetailsServiceImpl;
 
 @Component
@@ -26,6 +31,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	@Autowired
 	private JwtTokenUtils jwtTokenUtils;
 	
+	@Autowired
+	private ValidationUserManagementService userValidation;
 	
 	public JwtRequestFilter() {
 		super();
@@ -34,7 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+			throws  ServletException, IOException {
 		final String requestTokenHeader = request.getHeader("Authorization");
 
 		String username = null;
@@ -46,7 +53,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			try {
 				username = jwtTokenUtils.getUsernameFromToken(jwtToken);
 			} catch (IllegalArgumentException e) {
-				System.out.println("Unable to get JWT Token");
+				throw new UnauthorizedException("Authentication Process Error");
 			} 
 		} else {
 			logger.warn("JWT Token does not begin with Bearer String");
@@ -55,6 +62,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		// Once we get the token validate it.
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
+			try {
+				Map< String, Object> item = userValidation.validUserToAccessResource(username, request);
+				boolean flag = (boolean) item.get(APIConstant.RESULT_KEY);
+				if(!flag) {
+					throw new UnauthorizedException("Authentication Process Error");
+				}
+			} catch (BaseException e) {
+				throw new UnauthorizedException("Authentication Process Error");
+			}
+			
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
 			// if token is valid configure Spring Security to manually set
@@ -69,6 +86,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 		}
+		
 		filterChain.doFilter(request, response);
 	}
 	

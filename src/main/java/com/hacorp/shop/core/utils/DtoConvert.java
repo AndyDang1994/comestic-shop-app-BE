@@ -179,12 +179,14 @@ public class DtoConvert extends AbstractBasicCommonClass{
 		List<UserRole> userRole = user.getUserRoles();
 		
 		for (UserRole usRole : userRole) {
-			featureInfo.add((AuthenFeatureInfor) CommonUtil.toPojo(usRole.getRole().getRoleConfig(), AuthenFeatureInfor.class ));
+			featureInfo.addAll( CommonUtil.toListPojo(usRole.getRole().getRoleConfig(), AuthenFeatureInfor.class ));
 			roles.add(usRole.getRole().getRoleCode());
 		}
 		
 		userInf.setToken(token);
 		userInf.setUserName(user.getUserName());
+		userInf.setStatus(user.getStatus());
+		userInf.setEmail(user.getEmail());
 		userInf.setFullname(user.getMasterUserName());
 		userInf.setAuthenFeature(featureInfo);
 		userInf.setRoles(roles);

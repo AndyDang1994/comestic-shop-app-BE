@@ -15,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.hacorp.shop.core.model.UserInf;
+
 public class DateUtils {
 
 	protected static final Logger logger = LoggerFactory.getLogger(DateUtils.class);
@@ -134,6 +136,17 @@ public class DateUtils {
 			System.out.println("getLastDayOfYear(Date date): " + getLastDayOfYear(date));
 			System.out.println("getLastDayOfYear(String strDate): " + getLastDayOfYear(strDate));
 
+			UserInf us = new UserInf();
+			us.setUserName("gfdgfdg");
+			us.setEmail("@gdgfd");
+			us.setPassword("111");
+			List<String> ss = new ArrayList<>();
+			ss.add("reree");
+			us.setUserRoles(ss);
+			List<UserInf> s = new ArrayList<>();
+			s.add(us);
+			System.out.println(" List : " + CommonUtil.toJson(s));
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

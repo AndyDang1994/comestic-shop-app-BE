@@ -26,26 +26,36 @@ public class ValidationManagementService extends AbstractServiceClass {
 		
 		Map<String, Object> item = new HashedMap<>();
 		
+		List<User> users = new ArrayList<>();
+		List<UserInf> userInfs = (List<UserInf>) CommonUtil.toListPojo(inputParams.get(APIConstant.DOCUMENT_KEY).toString(), UserInf.class);
 		
-		UserInf userInf = (UserInf) CommonUtil.toPojo(inputParams.get(APIConstant.DOCUMENT_KEY), UserInf.class);
-		inputParams.put(APIConstant.ROLE_KEY, userInf.getUserRoles());
-		User user = DtoConvert.getUserFromUserInf(userInf,inputParams.get(APIConstant.OPTBY_KEY).toString());
-		List<Role> roles = getRepositoryManagerService().getRoleRepositoryService().getListRoleByRoleCode(inputParams);
-		if(userInf.getUserRoles().size() != roles.size()) {
+		if(userInfs.size() < 1 ) {
 			item.put(APIConstant.RESULT_KEY, false);
-			item.put(APIConstant.MSGCODE_KEY, "MSG_007");
+			item.put(APIConstant.MSGCODE_KEY, "MSG_009");
 			return item;
 		}
-		if(isUserNameExisted(user.getUserName())) {
-			item.put(APIConstant.RESULT_KEY, false);
-			item.put(APIConstant.MSGCODE_KEY, "MSG_006");
-			return item;
+		
+		for (UserInf userInf : userInfs) {
+			inputParams.put(APIConstant.ROLE_KEY, userInf.getUserRoles());
+			User user = DtoConvert.getUserFromUserInf(userInf,inputParams.get(APIConstant.OPTBY_KEY).toString());
+			List<Role> roles = getRepositoryManagerService().getRoleRepositoryService().getListRoleByRoleCode(inputParams);
+			if(userInf.getUserRoles().size() != roles.size()) {
+				item.put(APIConstant.RESULT_KEY, false);
+				item.put(APIConstant.MSGCODE_KEY, "MSG_007");
+				return item;
+			}
+			if(isUserNameExisted(user.getUserName())) {
+				item.put(APIConstant.RESULT_KEY, false);
+				item.put(APIConstant.MSGCODE_KEY, "MSG_006");
+				return item;
+			}
+			user.setUserRoles(DtoConvert.setListUserRole(user, roles, inputParams.get(APIConstant.OPTBY_KEY).toString()));
+			user.setLedgerStatus(APIConstant.LEDGER_STATUS_NORM);
+			user.setStatus(APIConstant.USER_ACTIVE);
+			user.setPassword(encodePassword(userInf.getPassword()));
+			users.add(user);
 		}
-		user.setUserRoles(DtoConvert.setListUserRole(user, roles, inputParams.get(APIConstant.OPTBY_KEY).toString()));
-		user.setLedgerStatus(APIConstant.LEDGER_STATUS_NORM);
-		user.setStatus(APIConstant.USER_ACTIVE);
-		user.setPassword(encodePassword(userInf.getPassword()));
-		item.put(APIConstant.DOCUMENT_KEY, user);
+		item.put(APIConstant.DOCUMENT_KEY, users);
 		item.put(APIConstant.RESULT_KEY, true);
 		return item;
 		

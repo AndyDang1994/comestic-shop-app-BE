@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import javax.persistence.PersistenceException;
+import javax.servlet.ServletException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -266,13 +267,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 			return buildErrorInvalidAgurmentResponseOmni((ServiceInvalidAgurmentException) e,
 					HttpStatus.BAD_REQUEST);
 		}
-		if (e instanceof UnauthorizedException) {
-			return buildErrorResponseOmni((UnauthorizedException) e, HttpStatus.UNAUTHORIZED);
-		}
-
+		
 		return buildErrorResponseOmni(e, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	@ExceptionHandler({ ServletException.class })
+	@ResponseBody
+	public ResponseEntity<Object> handleAuthenException(ServletException e) {
+		logger.error("ops!", e);
+		if (e instanceof UnauthorizedException) {
+			return buildErrorResponseOmni((UnauthorizedException) e, HttpStatus.UNAUTHORIZED);
+		}
+		return buildErrorResponseOmni(e, HttpStatus.UNAUTHORIZED);
+	}
+	
 	private ResponseEntity<Object> buildErrorInvalidAgurmentResponseOmni(ServiceInvalidAgurmentException ex,
 			HttpStatus status) {
 		ResponseOutPut output;

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hacorp.shop.common.AbstractBasicCommonClass;
 import com.hacorp.shop.core.constant.APIConstant;
 import com.hacorp.shop.core.exception.BaseException;
-import com.hacorp.shop.core.exception.ServiceInvalidAgurmentException;
 import com.hacorp.shop.core.exception.ServiceRuntimeException;
 import com.hacorp.shop.core.model.ProductInfor;
 import com.hacorp.shop.core.utils.FileStorageUtils;
@@ -22,20 +21,7 @@ import com.hacorp.shop.service.ShopApiService;
 @Service("shopApiService")
 public class ShopApiServiceImpl extends AbstractBasicCommonClass implements ShopApiService {
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	@Override
-	public boolean registerUser(Map<String, Object> inputParams) throws BaseException {
-		Map<String, Object> item = new HashedMap<>();
-		
-
-		
-		item = getProcessManagerService().getValidationManagementService().validateRegisterUser(inputParams);
-		if((boolean)item.get(APIConstant.RESULT_KEY) != true) {
-			throw new ServiceInvalidAgurmentException(String.format(env.getProperty(item.get(APIConstant.MSGCODE_KEY).toString())));
-		}
-		
-		return getRepositoryManagerService().getUserRepositoryService().save(item);
-	}
+	
 
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	@Override
@@ -62,7 +48,7 @@ public class ShopApiServiceImpl extends AbstractBasicCommonClass implements Shop
 		return FileStorageUtils.loadFileAsResource(fileName, env.getProperty(APIConstant.PATH_IMAGES_STORAGE));
 	}
 	
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	@Override
 	public boolean editPproduct(Map<String, Object> inputParams) throws BaseException {
 		Map<String, Object> item = new HashedMap<>();
@@ -76,7 +62,7 @@ public class ShopApiServiceImpl extends AbstractBasicCommonClass implements Shop
 	
 	}
 	
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	@Override
 	public Product createProduct(Map<String, Object> inputParams) throws BaseException {
 		Map<String, Object> item = new HashedMap<>();
@@ -89,7 +75,7 @@ public class ShopApiServiceImpl extends AbstractBasicCommonClass implements Shop
 		return getRepositoryManagerService().getProductRepositoryService().save(item);
 	}
 	
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	@Override
 	public boolean deleteProduct(Map<String, Object> inputParams) throws BaseException {
 		Map<String, Object> item = new HashedMap<>();

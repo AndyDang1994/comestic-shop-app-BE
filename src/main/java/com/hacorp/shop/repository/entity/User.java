@@ -3,7 +3,6 @@
  */
 package com.hacorp.shop.repository.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -23,16 +22,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user")
-public class User extends Base implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5399457077880624264L;
+public class User extends Base{
 
 	private String userName;
 	private String password;
 	private String status;
+	private String email;
 	private String masterUserName;
 	private List<UserRole> userRoles;
 
@@ -47,6 +42,17 @@ public class User extends Base implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.status = status;
+		this.masterUserName = masterUserName;
+		this.userRoles = userRoles;
+	}
+	
+	public User(String userName, String password, String status, String email, String masterUserName,
+			List<UserRole> userRoles) {
+		super();
+		this.userName = userName;
+		this.password = password;
+		this.status = status;
+		this.email = email;
 		this.masterUserName = masterUserName;
 		this.userRoles = userRoles;
 	}
@@ -95,6 +101,15 @@ public class User extends Base implements Serializable {
 
 	public void setUserRoles(List<UserRole> userRoles) {
 		this.userRoles = userRoles;
+	}
+
+	@Column(name = "email")
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

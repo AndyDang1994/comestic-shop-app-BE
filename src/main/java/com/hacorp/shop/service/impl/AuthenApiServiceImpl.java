@@ -1,5 +1,6 @@
 package com.hacorp.shop.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.map.HashedMap;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hacorp.shop.common.AbstractBasicCommonClass;
 import com.hacorp.shop.core.constant.APIConstant;
 import com.hacorp.shop.core.exception.BaseException;
+import com.hacorp.shop.core.exception.ServiceInvalidAgurmentException;
 import com.hacorp.shop.core.exception.UnauthorizedException;
 import com.hacorp.shop.core.model.MetaDataInfor;
 import com.hacorp.shop.core.model.UserInfo;
@@ -50,6 +52,31 @@ public class AuthenApiServiceImpl extends AbstractBasicCommonClass implements Au
 		MetaDataInfor meta = new MetaDataInfor();
 		meta.setSubCategoryMeta(getRepositoryManagerService().getSubCategoryRepositoryService().getSubCategoryInfor());
 		return meta;
+	}
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	@Override
+	public boolean registerUser(Map<String, Object> inputParams) throws BaseException {
+		Map<String, Object> item = new HashedMap<>();
+		
+		item = getProcessManagerService().getValidationManagementService().validateRegisterUser(inputParams);
+		if((boolean)item.get(APIConstant.RESULT_KEY) != true) {
+			throw new ServiceInvalidAgurmentException(String.format(env.getProperty(item.get(APIConstant.MSGCODE_KEY).toString())));
+		}
+		
+		return getRepositoryManagerService().getUserRepositoryService().saveAll(item);
+	}
+
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+	@Override
+	public List<UserInfo> getUserInforList(Map<String, Object> inputParams) throws BaseException {
+		return getRepositoryManagerService().getUserRepositoryService().getUserInforList(inputParams);
+	}
+	
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+	@Override
+	public Long getUserInforCount(Map<String, Object> inputParams) throws BaseException {
+		return getRepositoryManagerService().getUserRepositoryService().getUserInforCount(inputParams);
 	}
 
 }

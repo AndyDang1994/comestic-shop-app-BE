@@ -83,6 +83,7 @@ public class APIConstant {
 	
 	/** parameters key **/
 	public static final String USERNAME_KEY = "userName";
+	public static final String STATUS_KEY = "status";
 	public static final String LEDGER_STATUS_KEY = "ledgerStatus";
 	public static final String DOCUMENT_KEY = "document";
 	public static final String ROLE_KEY = "role";

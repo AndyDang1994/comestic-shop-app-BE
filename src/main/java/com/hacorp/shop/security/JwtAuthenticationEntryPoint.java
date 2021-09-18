@@ -11,6 +11,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hacorp.shop.core.constant.ResponseOutPut;
+import com.hacorp.shop.core.exception.ServiceRuntimeException;
+import com.hacorp.shop.core.utils.CommonUtil;
+
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable{
 
@@ -26,7 +32,17 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+		response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        ObjectMapper mapper = new ObjectMapper();
+        ResponseOutPut output = new ResponseOutPut("","Access Denied !",false,HttpServletResponse.SC_UNAUTHORIZED);
+        try {
+			response.getOutputStream().println(CommonUtil.toJson(output));
+		} catch (ServiceRuntimeException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

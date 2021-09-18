@@ -5,8 +5,11 @@ package com.hacorp.shop.core.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hacorp.shop.core.exception.ServiceRuntimeException;
+import com.hacorp.shop.core.utils.CommonUtil;
 import com.hacorp.shop.repository.entity.UserRole;
 
 /**
@@ -23,6 +26,7 @@ public class UserInfo implements Serializable{
 	private String password;
 	private String fullname;
 	private String status;
+	private String email;
 	private String token;
 	private Object roles;
 	private Object authenFeature;
@@ -35,7 +39,23 @@ public class UserInfo implements Serializable{
 		this.roles = new ArrayList<>();
 		this.authenFeature = new ArrayList<>();
 	}
-
+	public UserInfo(String userName,String fullname,String status,String email,List<UserRole> userRoles) {
+		super();
+		List<String> roles = new ArrayList<>();
+		List<AuthenFeatureInfor> roleFeatures = new ArrayList<>();
+		this.userName = userName;
+		this.fullname = fullname;
+		this.status = status;
+		this.email = email;
+		for (UserRole usRole : userRoles) {
+			try {
+				roleFeatures.add((AuthenFeatureInfor) CommonUtil.toPojo(usRole.getRole().getRoleConfig(), AuthenFeatureInfor.class ));
+			} catch (ServiceRuntimeException e) {
+				e.printStackTrace();
+			}
+			roles.add(usRole.getRole().getRoleCode());
+		}
+	}
 	/**
 	 * @param userName
 	 * @param password
@@ -182,6 +202,14 @@ public class UserInfo implements Serializable{
 
 	public void setAuthenFeature(Object authenFeature) {
 		this.authenFeature = authenFeature;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

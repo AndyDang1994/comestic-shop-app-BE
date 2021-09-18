@@ -10,6 +10,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -109,10 +110,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// The pages does not require login
 		http.authorizeRequests()
-			.antMatchers("/api/user/**")
-			.authenticated()
-			.antMatchers("/api/admin/**").authenticated()
-			.anyRequest().permitAll();
+//			.antMatchers("/api/user/**")
+//			.authenticated()
+//			.antMatchers("/api/admin/**").authenticated()
+//			.anyRequest().permitAll();
+			.antMatchers("/api/authentication","/api/signup")
+			.permitAll()
+			.antMatchers(HttpMethod.GET,"/api/products")
+			.permitAll()
+			.antMatchers(HttpMethod.GET,"/api/meta")
+			.permitAll()
+			.antMatchers(HttpMethod.OPTIONS)
+			.permitAll()
+			.anyRequest().authenticated();
 		
 		// AccessDeniedException will be thrown.
 		http.authorizeRequests().and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

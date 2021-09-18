@@ -17,7 +17,7 @@ public class Product extends Base {
 	private long id;
 	private String name;
 	private int quantity;
-	private String thumnail;
+	private String thumbnail;
 	private String description;
 	private BigDecimal price;
 	private int vote;
@@ -51,12 +51,12 @@ public class Product extends Base {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	@Column(name = "thumnail")
+	@Column(name = "thumbnail")
 	public String getThumnail() {
-		return thumnail;
+		return thumbnail;
 	}
-	public void setThumnail(String thumnail) {
-		this.thumnail = thumnail;
+	public void setThumnail(String thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 	@Column(name = "description")
 	public String getDescription() {
