@@ -98,6 +98,12 @@ public class APIConstant {
 	public static final String NUMBER_KEY = "_number";
 	public static final String PROD_NAME_KEY = "_prodName";
 	public static final String SUB_CATE_KEY = "_subCate";
+	public static final String PROMOTE_NAME_KEY = "_promoteName";
+	public static final String PROMOTE_TYPE_KEY = "_promoteType";
+	public static final String START_DT_KEY = "_startDt";
+	public static final String END_DT_KEY = "_endDt";
+	public static final String PRODUCT_ID_KEY = "_productId";
+	public static final String PROMOTE_ID_KEY = "_promoteId";
 	
 	
 	/** System Key **/

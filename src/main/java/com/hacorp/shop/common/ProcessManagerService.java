@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.hacorp.shop.service.AuthenApiService;
+import com.hacorp.shop.service.ProductPromotionApiService;
 import com.hacorp.shop.service.ShopApiService;
 
 
@@ -29,7 +30,13 @@ public class ProcessManagerService {
 	private ValidationManagementService validationManagementService;
 	
 	@Autowired
+	private ValidationPromotionService validationPromotionService;
+	
+	@Autowired
 	private AuthenApiService authenApiService;
+	
+	@Autowired
+	private ProductPromotionApiService productPromotionApiService;
 	
 	public ShopApiService getShopApiService() {
 		return shopApiService;
@@ -57,7 +64,24 @@ public class ProcessManagerService {
 			@Qualifier("authenApiService")	AuthenApiService authenApiService) {
 		this.authenApiService = authenApiService;
 	}
-	
+
+	public ProductPromotionApiService getProductPromotionApiService() {
+		return productPromotionApiService;
+	}
+
+	public void setProductPromotionApiService(
+			@Qualifier("productPromotionApiService")	ProductPromotionApiService productPromotionApiService) {
+		this.productPromotionApiService = productPromotionApiService;
+	}
+
+	public ValidationPromotionService getValidationPromotionService() {
+		return validationPromotionService;
+	}
+
+	public void setValidationPromotionService(
+			@Qualifier("validationPromotionService")	ValidationPromotionService validationPromotionService) {
+		this.validationPromotionService = validationPromotionService;
+	}
 	
 	
 }

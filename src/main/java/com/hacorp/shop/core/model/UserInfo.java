@@ -30,6 +30,7 @@ public class UserInfo implements Serializable{
 	private String token;
 	private Object roles;
 	private Object authenFeature;
+	private Object screenRole;
 
 	/**
 	 * 
@@ -38,6 +39,7 @@ public class UserInfo implements Serializable{
 		super();
 		this.roles = new ArrayList<>();
 		this.authenFeature = new ArrayList<>();
+		this.screenRole = new ArrayList<>();
 	}
 	public UserInfo(String userName,String fullname,String status,String email,List<UserRole> userRoles) {
 		super();
@@ -47,6 +49,8 @@ public class UserInfo implements Serializable{
 		this.fullname = fullname;
 		this.status = status;
 		this.email = email;
+		this.roles = roles;
+		this.authenFeature = roleFeatures;
 		for (UserRole usRole : userRoles) {
 			try {
 				roleFeatures.add((AuthenFeatureInfor) CommonUtil.toPojo(usRole.getRole().getRoleConfig(), AuthenFeatureInfor.class ));
@@ -56,6 +60,7 @@ public class UserInfo implements Serializable{
 			roles.add(usRole.getRole().getRoleCode());
 		}
 	}
+	
 	/**
 	 * @param userName
 	 * @param password
@@ -211,6 +216,11 @@ public class UserInfo implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+	public Object getScreenRole() {
+		return screenRole;
+	}
+	public void setScreenRole(Object screenRole) {
+		this.screenRole = screenRole;
+	}
 	
 }

@@ -18,13 +18,15 @@ public class ProductInfor implements Serializable{
 	private BigDecimal price;
 	private int vote;
 	private long commentID;
+	private String promoteType;
+	private Long promoteVolume;
 	
 	public ProductInfor() {
 		super();
 	}
 
 	public ProductInfor(long id, String name, int quantity, String[] thumnail, String description, BigDecimal price,
-			int vote, long commentID, String subCateCode) {
+			int vote, long commentID, String subCateCode, String promoteType, Long promoteVolume) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -35,6 +37,8 @@ public class ProductInfor implements Serializable{
 		this.vote = vote;
 		this.commentID = commentID;
 		this.subCateCode =subCateCode;
+		this.promoteType = promoteType;
+		this.promoteVolume = promoteVolume;
 	}
 
 	public long getId() {

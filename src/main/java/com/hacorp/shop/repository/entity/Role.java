@@ -1,13 +1,19 @@
 package com.hacorp.shop.repository.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,6 +25,7 @@ public class Role extends Base {
 	private String roleCode;
 	private String roleConfig;
 	private UserRole userRole;
+	private List<ScreenRole> screenRole;
 	
 	public Role() {
 		super();
@@ -41,7 +48,7 @@ public class Role extends Base {
 	public void setRoleCode(String roleCode) {
 		this.roleCode = roleCode;
 	}
-	@Lob
+	
 	@Column(name = "role_configure")
 	public String getRoleConfig() {
 		return roleConfig;
@@ -59,6 +66,19 @@ public class Role extends Base {
 
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
+	}
+
+
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "role", fetch = FetchType.LAZY)
+	@Fetch(value = FetchMode.SUBSELECT)
+	public List<ScreenRole> getScreenRole() {
+		return screenRole;
+	}
+
+
+	public void setScreenRole(List<ScreenRole> screenRole) {
+		this.screenRole = screenRole;
 	}
 	
 	

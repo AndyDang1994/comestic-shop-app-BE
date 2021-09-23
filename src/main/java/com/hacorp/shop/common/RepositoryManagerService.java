@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.hacorp.shop.repository.service.CategoryRepositoryService;
 import com.hacorp.shop.repository.service.ProductRepositoryService;
+import com.hacorp.shop.repository.service.PromotionInfRepositoryService;
+import com.hacorp.shop.repository.service.PromotionMasRepositoryService;
 import com.hacorp.shop.repository.service.RoleRepositoryService;
 import com.hacorp.shop.repository.service.SubCategoryRepositoryService;
 import com.hacorp.shop.repository.service.UserRepositoryService;
@@ -42,6 +44,12 @@ public class RepositoryManagerService {
 	
 	@Autowired
 	private ProductRepositoryService productRepositoryService;
+	
+	@Autowired
+	private PromotionInfRepositoryService promotionInfRepositoryService;
+	
+	@Autowired
+	private PromotionMasRepositoryService promotionMasRepositoryService;
 
 	public UserRoleRepositoryService getUserRoleRepositoryService() {
 		return userRoleRepositoryService;
@@ -95,6 +103,24 @@ public class RepositoryManagerService {
 	public void setProductRepositoryService(
 			@Qualifier("productRepositoryService")	ProductRepositoryService productRepositoryService) {
 		this.productRepositoryService = productRepositoryService;
+	}
+
+	public PromotionInfRepositoryService getPromotionInfRepositoryService() {
+		return promotionInfRepositoryService;
+	}
+
+	public void setPromotionInfRepositoryService(
+			@Qualifier("promotionInfRepositoryService")	PromotionInfRepositoryService promotionInfRepositoryService) {
+		this.promotionInfRepositoryService = promotionInfRepositoryService;
+	}
+
+	public PromotionMasRepositoryService getPromotionMasRepositoryService() {
+		return promotionMasRepositoryService;
+	}
+
+	public void setPromotionMasRepositoryService(
+			@Qualifier("promotionMasRepositoryService")	PromotionMasRepositoryService promotionMasRepositoryService) {
+		this.promotionMasRepositoryService = promotionMasRepositoryService;
 	}
 	
 }

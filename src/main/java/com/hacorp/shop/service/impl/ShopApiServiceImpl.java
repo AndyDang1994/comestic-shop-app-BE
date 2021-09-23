@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,25 +24,25 @@ public class ShopApiServiceImpl extends AbstractBasicCommonClass implements Shop
 
 	
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	@Override
 	public List<Product> getProduct(Map<String, Object> inputParams) throws BaseException {
 		return getRepositoryManagerService().getProductRepositoryService().getListBySubCategoryCode(inputParams);
 	}
 	
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	@Override
 	public List<ProductInfor> getAllProducts(Map<String, Object> inputParams) throws BaseException {
 		return getRepositoryManagerService().getProductRepositoryService().getAllList(inputParams);
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	@Override
 	public Long getCountAllProducts(Map<String, Object> inputParams) throws BaseException {
 		return getRepositoryManagerService().getProductRepositoryService().getCountProduct(inputParams);
 	}
 	
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	@Override
 	public Resource getProductImage(Map<String, Object> inputParams) throws BaseException {
 		String fileName = inputParams.get(APIConstant.FILENAME_KEY).toString();
