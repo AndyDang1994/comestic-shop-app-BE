@@ -1,5 +1,6 @@
 package com.hacorp.shop.core.utils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -133,6 +134,32 @@ public class DtoConvert extends AbstractBasicCommonClass {
 			String[] thumnails = (item.getThumnail() != null ? item.getThumnail().split(";") : " ".split(";"));
 			prod.setThumbnail(thumnails);
 			rs.add(prod);
+		}
+
+		return rs;
+
+	}
+	
+	public static List<ProductInfor> getProdInfors(List<Object[]> items) {
+
+		List<ProductInfor> rs = new ArrayList<>();
+
+		for (Object[] item : items) {
+			if(item[0] != null) {
+				String name = (item[1] == null ? "": item[1].toString());
+				int quantity = (item[2] == null ? 0 : (int)item[2]);
+				String[] thumnails = (item[3] != null ? item[3].toString().split(";") : null);
+				String description = (item[4] == null ? "":item[4].toString());
+				BigDecimal price = (item[5] == null ? APIConstant.DEC_ZERO : new BigDecimal(item[5].toString()));
+				int vote = ( item[6] == null ? 0 : (int)item[6] );
+				Long comment_id = (item[7] == null ? Long.valueOf("0") : Long.valueOf(item[7].toString()));
+				String promote_name = (item[8] == null ? "" : item[8].toString());
+				String promote_type = (item[9]== null ? "": item[9].toString());
+				Long volume = (item[10] == null ? Long.valueOf("0") : Long.valueOf(item[10].toString()));
+				ProductInfor prod = new ProductInfor(Long.valueOf(item[0].toString()), name, quantity, thumnails, description, price, vote, comment_id, promote_name, promote_type, volume);
+				rs.add(prod);
+			}
+			
 		}
 
 		return rs;

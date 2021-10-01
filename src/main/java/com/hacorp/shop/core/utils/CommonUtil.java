@@ -37,6 +37,9 @@ import com.google.gson.reflect.TypeToken;
 import com.hacorp.shop.core.constant.APIConstant;
 import com.hacorp.shop.core.exception.ServiceRuntimeException;
 import com.hacorp.shop.core.exception.UnauthorizedException;
+import com.hacorp.shop.core.model.ProductInfor;
+import com.hacorp.shop.core.model.ProductPromoteInfor;
+import com.hacorp.shop.core.model.PromotionInfor;
 import com.hacorp.shop.core.model.UserInfo;
 
 import io.jsonwebtoken.Claims;
@@ -73,9 +76,18 @@ public class CommonUtil {
 //		String compactJws = Jwts.builder().setPayload(gson.toJson(json))
 //				.signWith(SignatureAlgorithm.HS256, "ABC").compact();
 		BigDecimal bigDecimal = new BigDecimal("-1");
+		PromotionInfor pd = new PromotionInfor();
+		pd.setPromoteName("test");
+		pd.setType("fddf");
+		pd.setVolume(10l);
+		ProductPromoteInfor prd = new ProductPromoteInfor();
+		List<ProductPromoteInfor> l = new ArrayList<>();
+		prd.setProductId(10l);
+		l.add(prd);
+		pd.setProductPromoteInfors(l);
 		logger.info("isNumber : " + bigDecimal.toString());
 		try {
-			logger.info("isNumber : " + toJson(new UserInfo()));
+			logger.info("isNumber : " + toJson(pd));
 		} catch (ServiceRuntimeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

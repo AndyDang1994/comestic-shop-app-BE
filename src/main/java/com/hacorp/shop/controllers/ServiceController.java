@@ -1,6 +1,7 @@
 package com.hacorp.shop.controllers;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -61,6 +62,7 @@ public class ServiceController extends BaseController{
 	@RequestMapping(value = "/api/products",produces = "application/json;charset=utf-8", method = RequestMethod.GET )
 	public ResponseEntity<Object> getProductList(
 			@RequestParam(required = false, defaultValue = "") String _start,
+			@RequestParam(required = false, defaultValue = "") String _ledgerStatus,
 			@RequestParam(required = false, defaultValue = "") String _number,
 			@RequestParam(required = false, defaultValue = "") String _prodName,
 			@RequestParam(required = false, defaultValue = "") String _subCate) throws BaseException {
@@ -71,9 +73,10 @@ public class ServiceController extends BaseController{
 		input.put(APIConstant.NUMBER_KEY,_number);
 		input.put(APIConstant.PROD_NAME_KEY,_prodName);
 		input.put(APIConstant.SUB_CATE_KEY,_subCate);
+		input.put(APIConstant.LEDGER_STATUS_KEY,_ledgerStatus);
 		
-		List<ProductInfor> list = getRepositoryManagerService().getProductRepositoryService().getAllList(input);
-		Long count = getRepositoryManagerService().getProductRepositoryService().getCountProduct(input);
+		List<ProductInfor> list = getRepositoryManagerService().getProductRepositoryService().getListByParams(input);
+		BigInteger count = getRepositoryManagerService().getProductRepositoryService().countProductByParams(input);
 		
 		return triggerSuccessOutPut(list, count);
 		

@@ -9,8 +9,9 @@ public class ProductPromoteInfor implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private Long id;
 	private Long promoteId;
-	private ProductInfor productInfor;
+	private Long productId;
 	private String productName;
 	private String promotionType;
 	private Long volume;
@@ -20,31 +21,33 @@ public class ProductPromoteInfor implements Serializable{
 		super();
 	}
 
-	public ProductPromoteInfor(Long promoteId, ProductInfor productInfor, String promoteStatus) {
+	public ProductPromoteInfor(Long promoteId, Long productId, String promoteStatus) {
 		super();
-		this.productInfor = productInfor;
+		this.productId = productId;
 		this.promoteStatus = promoteStatus;
 		this.promoteId = promoteId;
 	}
 
 	
 	
-	public ProductPromoteInfor(Long promoteId, String productName, String promotionType, Long volume,
+	public ProductPromoteInfor(Long id, String productName, String promotionType, Long volume,
 			String promoteStatus) {
 		super();
-		this.promoteId = promoteId;
+		this.id = id;
 		this.productName = productName;
 		this.promotionType = promotionType;
 		this.volume = volume;
 		this.promoteStatus = promoteStatus;
 	}
 
-	public ProductInfor getProductInfor() {
-		return productInfor;
+	
+
+	public Long getProductId() {
+		return productId;
 	}
 
-	public void setProductInfor(ProductInfor productInfor) {
-		this.productInfor = productInfor;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 
 	public String getPromoteStatus() {
@@ -85,6 +88,14 @@ public class ProductPromoteInfor implements Serializable{
 
 	public void setVolume(Long volume) {
 		this.volume = volume;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.hacorp.shop.repository.service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +29,9 @@ public interface ProductRepositoryService {
 	public List<ProductInfor> getAllList(Map<String, Object> inputParams) throws BaseException;
 
 	public Long getCountProduct(Map<String, Object> inputParams) throws BaseException;
+
+	public List<ProductInfor> getListByParams(Map<String, Object> inputParams) throws BaseException;
+
+	public BigInteger countProductByParams(Map<String, Object> inputParams) throws BaseException;
 	
 }

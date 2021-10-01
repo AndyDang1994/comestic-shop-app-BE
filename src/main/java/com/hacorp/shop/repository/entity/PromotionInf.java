@@ -1,11 +1,15 @@
 package com.hacorp.shop.repository.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 
 
 @Entity
@@ -20,6 +24,7 @@ public class PromotionInf extends Base{
 	}
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	public Long getId() {
 		return id;
@@ -28,7 +33,7 @@ public class PromotionInf extends Base{
 		this.id = id;
 	}
 	
-	@ManyToOne
+	@ManyToOne( cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "product_id")
 	public Product getProduct() {
 		return product;
@@ -38,7 +43,7 @@ public class PromotionInf extends Base{
 	}
 	
 	@ManyToOne
-	@JoinColumn(name = "promote_id")
+	@JoinColumn(name = "promote_id", referencedColumnName = "id")
 	public PromotionMas getPromotionMas() {
 		return promotionMas;
 	}

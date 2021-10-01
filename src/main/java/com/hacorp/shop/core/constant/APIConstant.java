@@ -3,6 +3,8 @@
  */
 package com.hacorp.shop.core.constant;
 
+import java.math.BigDecimal;
+
 /**
  * @author shds01
  *
@@ -63,6 +65,7 @@ public class APIConstant {
 	public static final String TOKEN_EXPIRY_MINUTES = "Token_expiry_minutes";
 	
 	/** Other Constant **/
+	public static final BigDecimal DEC_ZERO = new BigDecimal("0");
 	public static final String YES_KEY = "Y";
 	public static final String NO_KEY = "N";
 	public static final String NULL_KEY = "NULL";

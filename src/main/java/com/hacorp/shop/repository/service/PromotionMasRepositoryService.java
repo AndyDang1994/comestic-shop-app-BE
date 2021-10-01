@@ -1,5 +1,6 @@
 package com.hacorp.shop.repository.service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ public interface PromotionMasRepositoryService {
 
 	public List<PromotionMas> getPromotionMasList(Map<String, Object> inputParams) throws BaseException;
 	
-	public Long countPromotionMasList(Map<String, Object> inputParams) throws BaseException;
+	public BigInteger countPromotionMasList(Map<String, Object> inputParams) throws BaseException;
 	
 	public PromotionMas getOne(Map<String, Object> inputParams) throws BaseException;
 	

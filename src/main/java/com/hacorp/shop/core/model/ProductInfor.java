@@ -113,6 +113,22 @@ public class ProductInfor implements Serializable{
 	public void setSubCateCode(String subCateCode) {
 		this.subCateCode = subCateCode;
 	}
+
+	public String getPromoteType() {
+		return promoteType;
+	}
+
+	public void setPromoteType(String promoteType) {
+		this.promoteType = promoteType;
+	}
+
+	public Long getPromoteVolume() {
+		return promoteVolume;
+	}
+
+	public void setPromoteVolume(Long promoteVolume) {
+		this.promoteVolume = promoteVolume;
+	}
 	
 	
 	

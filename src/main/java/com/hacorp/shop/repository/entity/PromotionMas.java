@@ -1,5 +1,7 @@
 package com.hacorp.shop.repository.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -7,10 +9,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -25,8 +32,8 @@ public class PromotionMas extends Base{
 	private String promoteName;
 	private String promoteType;
 	private Long volume;
-	private Date startAplTime;
-	private Date endAplTime;
+	private LocalDateTime startAplTime;
+	private LocalDateTime endAplTime;
 	private List<PromotionInf> promotionInfs;
 	
 	public PromotionMas() {
@@ -34,6 +41,7 @@ public class PromotionMas extends Base{
 	}
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	public Long getId() {
 		return id;
@@ -71,25 +79,27 @@ public class PromotionMas extends Base{
 	}
 
 	@Column(name = "start_apl_time")
-	public Date getStartAplTime() {
+	//@Temporal(TemporalType.TIMESTAMP)
+	public LocalDateTime getStartAplTime() {
 		return startAplTime;
 	}
 
-	public void setStartAplTime(Date startAplTime) {
+	public void setStartAplTime(LocalDateTime startAplTime) {
 		this.startAplTime = startAplTime;
 	}
 
 	@Column(name = "end_apl_time")
-	public Date getEndAplTime() {
+	//@Temporal(TemporalType.TIMESTAMP)
+	public LocalDateTime getEndAplTime() {
 		return endAplTime;
 	}
 
-	public void setEndAplTime(Date endAplTime) {
+	public void setEndAplTime(LocalDateTime endAplTime) {
 		this.endAplTime = endAplTime;
 	}
 	
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "promotionMas", fetch = FetchType.LAZY)
+	@OneToMany(cascade = { CascadeType.REMOVE,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "promotionMas", fetch = FetchType.LAZY)
 	@Fetch(value = FetchMode.SUBSELECT)
 	public List<PromotionInf> getPromotionInfs() {
 		return promotionInfs;

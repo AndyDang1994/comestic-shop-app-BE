@@ -55,7 +55,15 @@ public class ValidationUserManagementService extends AbstractServiceClass {
 						}
 					case APIConstant.PATCH_METHOD_STR:
 					case APIConstant.POST_METHOD_STR:
-						if(authen.getUpdateYn().equals(APIConstant.YES_KEY) || authen.getDeleteYn().equals(APIConstant.YES_KEY) || authen.getWriteYn().equals(APIConstant.YES_KEY)) {
+						if(authen.getUpdateYn().equals(APIConstant.YES_KEY) || authen.getWriteYn().equals(APIConstant.YES_KEY)) {
+							rs.put(APIConstant.RESULT_KEY, true);
+							return rs;
+						}else {
+							rs.put(APIConstant.RESULT_KEY, false);
+							return rs;
+						}
+					case APIConstant.DELETE_METHOD_STR:
+						if( authen.getDeleteYn().equals(APIConstant.YES_KEY)) {
 							rs.put(APIConstant.RESULT_KEY, true);
 							return rs;
 						}else {

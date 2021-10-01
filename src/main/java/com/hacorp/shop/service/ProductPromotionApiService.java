@@ -1,5 +1,6 @@
 package com.hacorp.shop.service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ public interface ProductPromotionApiService {
 	
 	public List<PromotionInfor> getListPromotionInfor(Map<String, Object> inputParams) throws BaseException;
 	
-	public Long countPromotionInfor(Map<String, Object> inputParams) throws BaseException;
+	public BigInteger countPromotionInfor(Map<String, Object> inputParams) throws BaseException;
 	
 	public List<ProductPromoteInfor> getListProductPromotionInfor(Map<String, Object> inputParams) throws BaseException;
 	

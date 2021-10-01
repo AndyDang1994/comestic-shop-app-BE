@@ -1,10 +1,15 @@
 package com.hacorp.shop.core.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 public class PromotionInfor implements Serializable{
 
@@ -16,38 +21,41 @@ public class PromotionInfor implements Serializable{
 	private Long promoteId;
 	private String promoteName;
 	private String promoteStatus;
-	private Date startAplTime;
-	private Date endAplTime;
+	private String startAplTime;
+	private String endAplTime;
 	private Long volume;
 	private String type;
 	private List<ProductPromoteInfor> productPromoteInfors;
 	public PromotionInfor() {
 		super();
 	}
-	public PromotionInfor(Long promoteId, String promoteName, String promoteStatus, Date startAplTime,
-			Date endAplTime, Long volume, String type, List<ProductPromoteInfor> productPromoteInfors) {
+	public PromotionInfor(Long promoteId, String promoteName, String promoteStatus, LocalDateTime startAplTime,
+			LocalDateTime endAplTime, Long volume, String type, List<ProductPromoteInfor> productPromoteInfors) {
 		super();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		this.promoteId = promoteId;
 		this.promoteName = promoteName;
 		this.promoteStatus = promoteStatus;
-		this.startAplTime = startAplTime;
-		this.endAplTime = endAplTime;
+		this.startAplTime = startAplTime.format(formatter);
+		this.endAplTime = endAplTime.format(formatter);
 		this.volume = volume;
 		this.type = type;
 		this.productPromoteInfors = productPromoteInfors;
 	}
 	
-	public PromotionInfor(Long promoteId, String promoteName, String promoteStatus, Date startAplTime, Date endAplTime,
+	public PromotionInfor(Long promoteId, String promoteName, String promoteStatus, LocalDateTime startAplTime, LocalDateTime endAplTime,
 			Long volume, String type) {
 		super();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		this.promoteId = promoteId;
 		this.promoteName = promoteName;
 		this.promoteStatus = promoteStatus;
-		this.startAplTime = startAplTime;
-		this.endAplTime = endAplTime;
+		this.startAplTime = startAplTime.format(formatter);
+		this.endAplTime = endAplTime.format(formatter);
 		this.volume = volume;
 		this.type = type;
 	}
+	
 	public Long getPromoteId() {
 		return promoteId;
 	}
@@ -66,18 +74,18 @@ public class PromotionInfor implements Serializable{
 	public void setPromoteStatus(String promoteStatus) {
 		this.promoteStatus = promoteStatus;
 	}
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-	public Date getStartAplTime() {
+	
+	public String getStartAplTime() {
 		return startAplTime;
 	}
-	public void setStartAplTime(Date startAplTime) {
+	public void setStartAplTime(String startAplTime) {
 		this.startAplTime = startAplTime;
 	}
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-	public Date getEndAplTime() {
+	
+	public String getEndAplTime() {
 		return endAplTime;
 	}
-	public void setEndAplTime(Date endAplTime) {
+	public void setEndAplTime(String endAplTime) {
 		this.endAplTime = endAplTime;
 	}
 	public Long getVolume() {
